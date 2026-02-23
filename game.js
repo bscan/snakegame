@@ -191,42 +191,49 @@ function drawGame() {
     // Draw snake
     if (snake.length > 0) {
         snake.forEach((segment, index) => {
-        if (index === 0) {
-            // Head
-            ctx.fillStyle = '#2e7d32';
-        } else {
-            // Body
-            ctx.fillStyle = '#4caf50';
-        }
-        
-        ctx.fillRect(
-            segment.x * CELL_SIZE + 1,
-            segment.y * CELL_SIZE + 1,
-            CELL_SIZE - 2,
-            CELL_SIZE - 2
-        );
-        
-        // Add eyes to head
-        if (index === 0) {
-            ctx.fillStyle = 'white';
-            const eyeSize = 3;
-            const eyeOffset = 5;
-            
-            if (direction.x === 1) { // Right
-                ctx.fillRect(segment.x * CELL_SIZE + CELL_SIZE - eyeOffset, segment.y * CELL_SIZE + eyeOffset, eyeSize, eyeSize);
-                ctx.fillRect(segment.x * CELL_SIZE + CELL_SIZE - eyeOffset, segment.y * CELL_SIZE + CELL_SIZE - eyeOffset - eyeSize, eyeSize, eyeSize);
-            } else if (direction.x === -1) { // Left
-                ctx.fillRect(segment.x * CELL_SIZE + eyeOffset - eyeSize, segment.y * CELL_SIZE + eyeOffset, eyeSize, eyeSize);
-                ctx.fillRect(segment.x * CELL_SIZE + eyeOffset - eyeSize, segment.y * CELL_SIZE + CELL_SIZE - eyeOffset - eyeSize, eyeSize, eyeSize);
-            } else if (direction.y === -1) { // Up
-                ctx.fillRect(segment.x * CELL_SIZE + eyeOffset, segment.y * CELL_SIZE + eyeOffset - eyeSize, eyeSize, eyeSize);
-                ctx.fillRect(segment.x * CELL_SIZE + CELL_SIZE - eyeOffset - eyeSize, segment.y * CELL_SIZE + eyeOffset - eyeSize, eyeSize, eyeSize);
-            } else { // Down
-                ctx.fillRect(segment.x * CELL_SIZE + eyeOffset, segment.y * CELL_SIZE + CELL_SIZE - eyeOffset, eyeSize, eyeSize);
-                ctx.fillRect(segment.x * CELL_SIZE + CELL_SIZE - eyeOffset - eyeSize, segment.y * CELL_SIZE + CELL_SIZE - eyeOffset, eyeSize, eyeSize);
+            if (index === 0) {
+                // Head
+                ctx.fillStyle = '#2e7d32';
+            } else {
+                // Body
+                ctx.fillStyle = '#4caf50';
             }
-        }
+            
+            ctx.fillRect(
+                segment.x * CELL_SIZE + 1,
+                segment.y * CELL_SIZE + 1,
+                CELL_SIZE - 2,
+                CELL_SIZE - 2
+            );
+            
+            // Add eyes to head
+            if (index === 0) {
+                drawSnakeEyes(segment);
+            }
         });
+    }
+}
+
+// Draw snake eyes based on direction
+function drawSnakeEyes(headSegment) {
+    ctx.fillStyle = 'white';
+    const eyeSize = 3;
+    const eyeOffset = 5;
+    const x = headSegment.x * CELL_SIZE;
+    const y = headSegment.y * CELL_SIZE;
+    
+    if (direction.x === 1) { // Right
+        ctx.fillRect(x + CELL_SIZE - eyeOffset, y + eyeOffset, eyeSize, eyeSize);
+        ctx.fillRect(x + CELL_SIZE - eyeOffset, y + CELL_SIZE - eyeOffset - eyeSize, eyeSize, eyeSize);
+    } else if (direction.x === -1) { // Left
+        ctx.fillRect(x + eyeOffset - eyeSize, y + eyeOffset, eyeSize, eyeSize);
+        ctx.fillRect(x + eyeOffset - eyeSize, y + CELL_SIZE - eyeOffset - eyeSize, eyeSize, eyeSize);
+    } else if (direction.y === -1) { // Up
+        ctx.fillRect(x + eyeOffset, y + eyeOffset - eyeSize, eyeSize, eyeSize);
+        ctx.fillRect(x + CELL_SIZE - eyeOffset - eyeSize, y + eyeOffset - eyeSize, eyeSize, eyeSize);
+    } else { // Down
+        ctx.fillRect(x + eyeOffset, y + CELL_SIZE - eyeOffset, eyeSize, eyeSize);
+        ctx.fillRect(x + CELL_SIZE - eyeOffset - eyeSize, y + CELL_SIZE - eyeOffset, eyeSize, eyeSize);
     }
 }
 
