@@ -77,8 +77,15 @@ function generatePellet() {
 
 // Handle keyboard input
 function handleKeyPress(e) {
+    // Handle Enter key for starting/restarting game
+    if (e.key === 'Enter' && !isGameRunning) {
+        startGame();
+        e.preventDefault();
+        return;
+    }
+
     if (!isGameRunning) return;
-    
+
     switch(e.key) {
         case 'ArrowUp':
             if (direction.y === 0) {
