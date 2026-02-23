@@ -3,7 +3,7 @@ const CANVAS_SIZE = 400;
 const GRID_SIZE = 20;
 const CELL_SIZE = CANVAS_SIZE / GRID_SIZE;
 const INITIAL_SNAKE_LENGTH = 3;
-const GAME_SPEED = 100; // milliseconds
+const GAME_SPEED = 150; // milliseconds
 
 // Game state
 let canvas;
@@ -47,7 +47,7 @@ function startGame() {
 function resetGame() {
     // Initialize snake in the middle, moving right
     snake = [];
-    for (let i = INITIAL_SNAKE_LENGTH - 1; i >= 0; i--) {
+    for (let i = 0; i < INITIAL_SNAKE_LENGTH; i++) {
         snake.push({ x: Math.floor(GRID_SIZE / 2) - i, y: Math.floor(GRID_SIZE / 2) });
     }
     
