@@ -15,8 +15,16 @@
         </div>
         <canvas id="gameCanvas" width="400" height="400"></canvas>
         <div class="controls">
-            <p>Use arrow keys to move</p>
+            <p>Use arrow keys or tap the controls to move</p>
             <button id="startButton">Start Game</button>
+            <div class="touch-controls" aria-label="Touch controls">
+                <button class="control-btn" id="controlUp" aria-label="Move up">↑</button>
+                <div class="control-row">
+                    <button class="control-btn" id="controlLeft" aria-label="Move left">←</button>
+                    <button class="control-btn" id="controlDown" aria-label="Move down">↓</button>
+                    <button class="control-btn" id="controlRight" aria-label="Move right">→</button>
+                </div>
+            </div>
         </div>
         <div id="gameOver" class="game-over hidden">
             <h2>Game Over!</h2>

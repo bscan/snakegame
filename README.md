@@ -50,10 +50,10 @@ Then navigate to `http://localhost:8000` in your browser.
 ## Game Controls
 
 - **Arrow Keys**: Control snake direction
+- **On-screen Arrows**: Tap the touch controls on mobile devices
 - **Start Game Button**: Begin a new game
 - **Play Again Button**: Restart after game over
 
 ## License
 
 See LICENSE file for details.
-

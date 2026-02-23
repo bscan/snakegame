@@ -31,6 +31,21 @@ function init() {
     document.getElementById('startButton').addEventListener('click', startGame);
     document.getElementById('restartButton').addEventListener('click', restartGame);
     
+    [
+        { id: 'controlUp', direction: 'up' },
+        { id: 'controlDown', direction: 'down' },
+        { id: 'controlLeft', direction: 'left' },
+        { id: 'controlRight', direction: 'right' }
+    ].forEach(control => {
+        const button = document.getElementById(control.id);
+        if (button) {
+            button.addEventListener('pointerdown', (event) => {
+                event.preventDefault();
+                handleDirectionInput(control.direction);
+            });
+        }
+    });
+    
     // Draw initial state
     drawGame();
 }
@@ -75,6 +90,34 @@ function generatePellet() {
     }
 }
 
+// Handle direction updates from keyboard or touch controls
+function handleDirectionInput(input) {
+    if (!isGameRunning) return;
+    
+    switch (input) {
+        case 'up':
+            if (direction.y === 0) {
+                nextDirection = { x: 0, y: -1 };
+            }
+            break;
+        case 'down':
+            if (direction.y === 0) {
+                nextDirection = { x: 0, y: 1 };
+            }
+            break;
+        case 'left':
+            if (direction.x === 0) {
+                nextDirection = { x: -1, y: 0 };
+            }
+            break;
+        case 'right':
+            if (direction.x === 0) {
+                nextDirection = { x: 1, y: 0 };
+            }
+            break;
+    }
+}
+
 // Handle keyboard input
 function handleKeyPress(e) {
     // Handle Enter key for starting/restarting game
@@ -84,33 +127,16 @@ function handleKeyPress(e) {
         return;
     }
 
-    if (!isGameRunning) return;
+    const keyDirectionMap = {
+        ArrowUp: 'up',
+        ArrowDown: 'down',
+        ArrowLeft: 'left',
+        ArrowRight: 'right'
+    };
 
-    switch(e.key) {
-        case 'ArrowUp':
-            if (direction.y === 0) {
-                nextDirection = { x: 0, y: -1 };
-            }
-            e.preventDefault();
-            break;
-        case 'ArrowDown':
-            if (direction.y === 0) {
-                nextDirection = { x: 0, y: 1 };
-            }
-            e.preventDefault();
-            break;
-        case 'ArrowLeft':
-            if (direction.x === 0) {
-                nextDirection = { x: -1, y: 0 };
-            }
-            e.preventDefault();
-            break;
-        case 'ArrowRight':
-            if (direction.x === 0) {
-                nextDirection = { x: 1, y: 0 };
-            }
-            e.preventDefault();
-            break;
+    if (keyDirectionMap[e.key]) {
+        e.preventDefault();
+        handleDirectionInput(keyDirectionMap[e.key]);
     }
 }
 
