@@ -175,19 +175,22 @@ function drawGame() {
     }
     
     // Draw pellet
-    ctx.fillStyle = '#f44336';
-    ctx.beginPath();
-    ctx.arc(
-        pellet.x * CELL_SIZE + CELL_SIZE / 2,
-        pellet.y * CELL_SIZE + CELL_SIZE / 2,
-        CELL_SIZE / 2 - 2,
-        0,
-        Math.PI * 2
-    );
-    ctx.fill();
+    if (pellet.x !== undefined && pellet.y !== undefined) {
+        ctx.fillStyle = '#f44336';
+        ctx.beginPath();
+        ctx.arc(
+            pellet.x * CELL_SIZE + CELL_SIZE / 2,
+            pellet.y * CELL_SIZE + CELL_SIZE / 2,
+            CELL_SIZE / 2 - 2,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
+    }
     
     // Draw snake
-    snake.forEach((segment, index) => {
+    if (snake.length > 0) {
+        snake.forEach((segment, index) => {
         if (index === 0) {
             // Head
             ctx.fillStyle = '#2e7d32';
@@ -223,7 +226,8 @@ function drawGame() {
                 ctx.fillRect(segment.x * CELL_SIZE + CELL_SIZE - eyeOffset - eyeSize, segment.y * CELL_SIZE + CELL_SIZE - eyeOffset, eyeSize, eyeSize);
             }
         }
-    });
+        });
+    }
 }
 
 // Game over
