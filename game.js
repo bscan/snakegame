@@ -16,6 +16,7 @@ let score = 0;
 let highScore = 0;
 let gameLoop;
 let isGameRunning = false;
+let isPaused = false;
 
 // Initialize the game
 function init() {
@@ -53,8 +54,10 @@ function init() {
 // Start the game
 function startGame() {
     resetGame();
+    isPaused = false;
     isGameRunning = true;
     document.getElementById('startButton').disabled = true;
+    document.getElementById('pauseIndicator').classList.add('hidden');
     gameLoop = setInterval(updateGame, GAME_SPEED);
 }
 
@@ -92,7 +95,7 @@ function generatePellet() {
 
 // Handle direction updates from keyboard or touch controls
 function handleDirectionInput(input) {
-    if (!isGameRunning) return;
+    if (!isGameRunning || isPaused) return;
     
     switch (input) {
         case 'up':
@@ -127,6 +130,13 @@ function handleKeyPress(e) {
         return;
     }
 
+    // Handle spacebar for pause/resume
+    if (e.key === ' ' && isGameRunning) {
+        togglePause();
+        e.preventDefault();
+        return;
+    }
+
     const keyDirectionMap = {
         ArrowUp: 'up',
         ArrowDown: 'down',
@@ -137,6 +147,19 @@ function handleKeyPress(e) {
     if (keyDirectionMap[e.key]) {
         e.preventDefault();
         handleDirectionInput(keyDirectionMap[e.key]);
+    }
+}
+
+// Toggle pause state
+function togglePause() {
+    isPaused = !isPaused;
+    
+    if (isPaused) {
+        clearInterval(gameLoop);
+        document.getElementById('pauseIndicator').classList.remove('hidden');
+    } else {
+        gameLoop = setInterval(updateGame, GAME_SPEED);
+        document.getElementById('pauseIndicator').classList.add('hidden');
     }
 }
 
@@ -273,8 +296,10 @@ function drawSnakeEyes(headSegment) {
 // Game over
 function gameOver() {
     isGameRunning = false;
+    isPaused = false;
     clearInterval(gameLoop);
     document.getElementById('startButton').disabled = false;
+    document.getElementById('pauseIndicator').classList.add('hidden');
     document.getElementById('finalScore').textContent = score;
     document.getElementById('gameOver').classList.remove('hidden');
 }
