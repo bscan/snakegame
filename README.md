@@ -1,3 +1,11 @@
+Play a classic snake game here: https://bscan.github.io/snakegame/ 
+
+# Repo purpose
+
+This repo was a test of agentic development and was built entirely in Github Copilot. Feel free to use it as an AI testing ground as well. 
+
+If you file an issues, I can tag Claude or Copilot to work on them. 
+
 # Snake Game
 
 A classic browser-based snake game built with vanilla JavaScript, HTML5 Canvas, and CSS.
