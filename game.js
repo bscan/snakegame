@@ -5,6 +5,23 @@ const CELL_SIZE = CANVAS_SIZE / GRID_SIZE;
 const INITIAL_SNAKE_LENGTH = 3;
 const GAME_SPEED = 150; // milliseconds
 
+// Food progression: as the snake grows, it eats more substantial prey
+const FOOD_PROGRESSION = [
+    { minScore:  0, emoji: '🐛', name: 'Worm' },
+    { minScore:  3, emoji: '🦗', name: 'Cricket' },
+    { minScore:  6, emoji: '🐌', name: 'Snail' },
+    { minScore:  9, emoji: '🐸', name: 'Frog' },
+    { minScore: 12, emoji: '🐭', name: 'Mouse' },
+    { minScore: 16, emoji: '🐀', name: 'Rat' },
+    { minScore: 20, emoji: '🐇', name: 'Rabbit' },
+    { minScore: 24, emoji: '🐦', name: 'Bird' },
+    { minScore: 28, emoji: '🐟', name: 'Fish' },
+    { minScore: 32, emoji: '🦎', name: 'Lizard' },
+    { minScore: 36, emoji: '🐖', name: 'Pig' },
+    { minScore: 40, emoji: '🦌', name: 'Deer' },
+    { minScore: 44, emoji: '🐐', name: 'Goat' },
+];
+
 // Game state
 let canvas;
 let ctx;
@@ -17,6 +34,25 @@ let highScore = 0;
 let gameLoop;
 let isGameRunning = false;
 let isPaused = false;
+
+// Return the current food item based on score
+function getCurrentFood() {
+    for (let i = FOOD_PROGRESSION.length - 1; i >= 0; i--) {
+        if (score >= FOOD_PROGRESSION[i].minScore) {
+            return FOOD_PROGRESSION[i];
+        }
+    }
+    return FOOD_PROGRESSION[0];
+}
+
+// Update the food indicator in the UI
+function updateFoodIndicator() {
+    const food = getCurrentFood();
+    const el = document.getElementById('currentFood');
+    if (el) {
+        el.textContent = food.emoji + ' ' + food.name;
+    }
+}
 
 // Initialize the game
 function init() {
@@ -74,6 +110,7 @@ function resetGame() {
     score = 0;
     document.getElementById('score').textContent = score;
     document.getElementById('gameOver').classList.add('hidden');
+    updateFoodIndicator();
     
     generatePellet();
 }
@@ -192,6 +229,7 @@ function updateGame() {
     if (head.x === pellet.x && head.y === pellet.y) {
         score++;
         document.getElementById('score').textContent = score;
+        updateFoodIndicator();
         
         // Update high score
         if (score > highScore) {
@@ -230,18 +268,17 @@ function drawGame() {
         ctx.stroke();
     }
     
-    // Draw pellet
+    // Draw pellet (food emoji matching current snake size)
     if (pellet.x !== undefined && pellet.y !== undefined) {
-        ctx.fillStyle = '#f44336';
-        ctx.beginPath();
-        ctx.arc(
+        const food = getCurrentFood();
+        ctx.font = `${CELL_SIZE - 2}px serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(
+            food.emoji,
             pellet.x * CELL_SIZE + CELL_SIZE / 2,
-            pellet.y * CELL_SIZE + CELL_SIZE / 2,
-            CELL_SIZE / 2 - 2,
-            0,
-            Math.PI * 2
+            pellet.y * CELL_SIZE + CELL_SIZE / 2
         );
-        ctx.fill();
     }
     
     // Draw snake
